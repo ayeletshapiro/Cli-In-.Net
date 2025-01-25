@@ -3,19 +3,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.CommandLine;
 using System.Text;
-using Syncfusion.OfficeChart.Implementation;
-using System.Linq;
 using line;
-using System.IO;
-
-//Register the encoding provider at the start of your Main method
-//System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider);
-
-using SixLabors.Fonts;
-using System.Text.Unicode;
-using System;
-using Google.Protobuf.WellKnownTypes;
-using BitMiracle.LibTiff.Classic;
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 IronWord.License.LicenseKey = "YOUR-KEY-HERE";
 
@@ -68,13 +56,10 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
         {
             if (ReadTypesOfFiles.IsFullPath(name))
             {
-                Console.WriteLine();
-                Console.WriteLine("The string is a full path.");
                 if (Path.Exists(Path.GetDirectoryName(name)))
                 {
 
                     string directoryBundledFile = Path.GetDirectoryName(name);
-                    Console.WriteLine(directoryBundledFile);
                     string tFile = "tempFile.txt"; // Specify the file path
                     string contentTempFile = "Hello, this is a new temp text file."; // Content to write
                     // Create and write to the file
@@ -102,8 +87,6 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
             foreach (var file in files)
             {
                 string fileType = Path.GetExtension(file);//Thy type of the file
-               
-
                 if (fileType == ".docx" || fileType == ".doc")
                 {
                     if (note)
@@ -111,23 +94,6 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
                         content.Append($"\t the file origion:{Relative(fileToRelate, file)}\n");
                     }
                     content.Append(ReadTypesOfFiles.ReadDocxFile(file, cleanLines));
-                }
-
-                else if (fileType == ".xlsx")
-                {
-                    if (note)
-                    {
-                        content.Append($"\t the file origion:{Relative(fileToRelate, file)}\n");
-                    }
-                    content.Append(File.ReadAllText(file, Encoding.UTF8));// Read the content of excel file and append it to the content variable
-                }
-                else if (fileType == ".pdf")
-                {
-                    if (note)
-                    {
-                        content.Append($"\t the file origion:{Relative(fileToRelate, file)}\n");
-                    }
-                    content.Append(ReadTypesOfFiles.ReadPdfFile(file, cleanLines));// Read the content of pdf file and append it to the content variable
                 }
                 else if (fileType == ".html")
                 {
@@ -151,7 +117,6 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
         }
         else
         {
-
             foreach (var file in files)
             {
                 bool con = false;
@@ -192,10 +157,7 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
                         content.Append(ReadTypesOfFiles.ReadRegularFile(file,cleanLines));
                     }
                     content.AppendLine();
-
                 }
-
-
             }
         }
 
@@ -232,7 +194,6 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
                 document.Add(titleParagraph);
             }
 
-            // הגדרת פונט לתוכן
 
             // הוספת תוכן
             iTextSharp.text.Paragraph paragraphPage = new iTextSharp.text.Paragraph(content.ToString(), font);
@@ -273,55 +234,7 @@ static string Relative(string path1, string path2)
 {
     return System.IO.Path.GetRelativePath(path1, path2)=="."?$"..\\{Path.GetFileName(path2)}": System.IO.Path.GetRelativePath(path1, path2);
 }
-#region Hebrew Reverse
 
-//static string ReverseHebrewText(string input)
-//{
-//    // Define the Unicode ranges for Hebrew characters
-//    Regex regex = new Regex(@"\p{IsHebrew}");
-
-//    // Find all Hebrew text in the input string
-//    MatchCollection matches = regex.Matches(input);
-
-//    // Reverse each Hebrew text found in the input string
-//    foreach (Match match in matches)
-//    {
-//        char[] charArray = match.Value.ToCharArray();
-//        Array.Reverse(charArray);
-//        string reversedHebrew = new string(charArray);
-
-//        // Replace the original Hebrew text with the reversed Hebrew text in the input string
-//        input = input.Replace(match.Value, reversedHebrew);
-//    }
-
-//    return input;
-//}
-#endregion Hebrew Reverse
-
-#region Hebrew Reverse
-
-//static string ReverseHebrewText(string input)
-//{
-//    // Define the Unicode ranges for Hebrew characters
-//    Regex regex = new Regex(@"\p{IsHebrew}");
-
-//    // Find all Hebrew text in the input string
-//    MatchCollection matches = regex.Matches(input);
-
-//    // Reverse each Hebrew text found in the input string
-//    foreach (Match match in matches)
-//    {
-//        char[] charArray = match.Value.ToCharArray();
-//        Array.Reverse(charArray);
-//        string reversedHebrew = new string(charArray);
-
-//        // Replace the original Hebrew text with the reversed Hebrew text in the input string
-//        input = input.Replace(match.Value, reversedHebrew);
-//    }
-
-//    return input;
-//}
-#endregion Hebrew Reverse
 
 
 
