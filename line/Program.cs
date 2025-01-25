@@ -234,16 +234,3 @@ static string Relative(string path1, string path2)
 {
     return System.IO.Path.GetRelativePath(path1, path2)=="."?$"..\\{Path.GetFileName(path2)}": System.IO.Path.GetRelativePath(path1, path2);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Aspose.Html;
 using IronWord;
 using IronWord.Models;
-using System;
-using System.IO;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
-using System.Text.RegularExpressions;
-using iText.Kernel.Pdf;
-using iText.Kernel.Pdf.Canvas.Parser;
 
 namespace line
 {
@@ -79,17 +68,6 @@ namespace line
             return sb;
         }
 
-        public static void WriteRegularFile(string word)
-        {
-            using (StreamWriter writer = new StreamWriter("C:\\Users\\HOME\\Desktop\\לפרקטיקוד\\מסמך 2.txt"))
-            {
-                writer.WriteLine(word); // כותב את המילה לקובץ
-                writer.Write(word);
-                writer.Close();
-            }
-        }
-
-
         public static bool IsFullPath(string path)
         {
             // בודק אם המחרוזת מכילה תו ניתוב
@@ -97,34 +75,7 @@ namespace line
         }
 
 
-        public static string GetRelativePath(string bundleFilePath, string filePath)
-        {
-            if (!System.IO.Path.IsPathRooted(bundleFilePath))
-            {
-                bundleFilePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), bundleFilePath);
-            }
 
-            if (!System.IO.Path.IsPathRooted(filePath))
-            {
-                filePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), filePath);
-            }
-
-            // בדיקת קיום הקבצים
-            if (!File.Exists(bundleFilePath))
-            {
-                throw new FileNotFoundException($"The bundle file '{bundleFilePath}' does not exist.");
-            }
-
-            if (!File.Exists(filePath))
-            {
-                throw new FileNotFoundException($"The source file '{filePath}' does not exist.");
-            }
-
-            // חישוב הנתיב היחסי
-            string relativePath = System.IO.Path.GetRelativePath(bundleFilePath, filePath);
-
-            return relativePath;
-        }
         // remove empty lines
         public static StringBuilder RemoveEmptyLinesFromText(string text)
         {
