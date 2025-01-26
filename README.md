@@ -47,7 +47,7 @@ line bundle --language <languages> --output <bundle file's name> [options]
 - Bundle all files in a different directory:
  line bundle --language all --output "C:\Users\HOME\Desktop\‏‏\תיקיה חדשהmergedCode"
 
-  ```  
+
 - Bundle specific languages (e.g., C# and Python) with cleanup and author details:  
   
   line bundle --language cs,py --output output --remove-empty-lines --author "John Doe"
