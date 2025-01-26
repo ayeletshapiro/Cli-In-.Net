@@ -6,17 +6,18 @@ using System.Text;
 using line;
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 IronWord.License.LicenseKey = "YOUR-KEY-HERE";
-
-var bundleLangOption = new Option<string>("--language", "list of languages of files to bundle")//option --language
+//Create the options
+var bundleLangOption = new Option<string>("--language", "list of languages of files to bundle")//Option --language
 {
     IsRequired = true
 };
 bundleLangOption.AddAlias("-l");
-var bundleOutputOption = new Option<string>(new[] { "--output", "-o" }, "the name of the bundle file of full path");//option --output
-var bundleNoteOption = new Option<bool>(new[] { "--note", "-n" }, "if to indicate the name of the origion file in the bundle file");//option --output
-var bundleSortOption = new Option<string>(new[] { "--sort", "-s" }, "sort the files in the bundle file acording to what the user prefiers");//option --output
-var bundleAuthorOption = new Option<string>(new[] { "--author", "-a" }, "name to write in the up of the bundle file");//option --output
-var bundleCleanLinesOption = new Option<bool>(new[] { "--remove-empty-lines", "-rel" }, "removes empty lines from each file before copy it to the bundle");//option --output
+var bundleOutputOption = new Option<string>(new[] { "--output", "-o" }, "the name of the bundle file of full path");//Option --output
+var bundleNoteOption = new Option<bool>(new[] { "--note", "-n" }, "if to indicate the name of the origion file in the bundle file");//Option --note
+var bundleSortOption = new Option<string>(new[] { "--sort", "-s" }, "sort the files in the bundle file acording to what the user prefiers");//Option --sort
+var bundleAuthorOption = new Option<string>(new[] { "--author", "-a" }, "name to write in the up of the bundle file");//Option --author
+var bundleCleanLinesOption = new Option<bool>(new[] { "--remove-empty-lines", "-rel" }, "removes empty lines from each file before copy it to the bundle");//Option --remove-empty-lines
+//Create the root command
 var bundleCommand = new Command("bundle", "bundle all code files into a single file");//the bundle command
 bundleCommand.AddOption(bundleLangOption);
 bundleCommand.AddOption(bundleOutputOption);
@@ -26,17 +27,17 @@ bundleCommand.AddOption(bundleAuthorOption);
 bundleCommand.AddOption(bundleCleanLinesOption);
 bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLines) =>
 {
-    if (name == null)
+    if (name == null) // The option name was not inserted
     {
         name = "bundled file";
     }
-    string lowerLanguagesFromUser = languagesFromUser.ToLower();//low the letters in the languages input
+    string lowerLanguagesFromUser = languagesFromUser.ToLower();//Low the letters in the languages option input
     List<string> languages = new List<string>();
-    languages = lowerLanguagesFromUser.Split(',').ToList();//make a list of languages from the languages input
+    languages = lowerLanguagesFromUser.Split(',').ToList();//Make a list of languages from the languages input
     StringBuilder content = new StringBuilder();//Variable from  the content of the files
     try
     {
-        string fileToRelate = "";// for the note option i create a temp file for the relative path
+        string fileToRelate = "";// For the note option i create a temp file for the relative path
         bool deleteTempFile = false;
         string currentDirectory = Directory.GetCurrentDirectory();
         string folderName = Path.GetFileName(Directory.GetCurrentDirectory());
@@ -47,18 +48,18 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
         }
         string[] files = Directory.GetFiles(currentDirectory);
 
-        if (files.Length == 0)//רק אם יש קבצים לעבור עליהם
+        if (files.Length == 0) // Only if the folder doesnwt have files to go over them
         {
             Console.WriteLine("the folder that was given is empty of files...");
             return;
         }
-        if (note)
+        if (note) // If the user is interested that the file origion will be written above the file content
         {
-            if (ReadTypesOfFiles.IsFullPath(name))
+            if (ReadTypesOfFiles.IsFullPath(name)) // If the user chose a certain path for the bundle file
             {
                 if (Path.Exists(Path.GetDirectoryName(name)))
                 {
-
+                    //Creating a temp file in the directory of the bundle file in order to compare the relative path
                     string directoryBundledFile = Path.GetDirectoryName(name);
                     string tFile = "tempFile.txt"; // Specify the file path
                     string contentTempFile = "Hello, this is a new temp text file."; // Content to write
@@ -81,7 +82,7 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
                 String.Compare(System.IO.Path.GetExtension(file1), System.IO.Path.GetExtension(file2)));
         }
         else
-        { Array.Sort(files); }
+        { Array.Sort(files); } // Sort the files by their names
         if (lowerLanguagesFromUser.ToLower().Equals("all"))
         {
             foreach (var file in files)
@@ -119,6 +120,7 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
         {
             foreach (var file in files)
             {
+                List<string> notFoundLang = new List<string>();// List for languages that weren't in the folder
                 bool con = false;
                 string fileType = Path.GetExtension(file);
                 if (languages.Contains("c#") && fileType == ".cs")
@@ -128,6 +130,10 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
                 if ((languages.Contains("angularjs") || languages.Contains("reactjs")) && fileType == ".js") { con = true; }
                 if ((languages.Contains("angularts") || languages.Contains("reactts")) && fileType == ".ts") { con = true; }
                 if (languages.Contains("word") && fileType == ".docx") { con = true; }
+                if (languages.Contains("c++") && fileType == ".cpp") { con = true; }
+                if (languages.Contains("python") && fileType == ".py") { con = true; }
+                if (languages.Contains("javascript") && fileType == ".js") { con = true; }
+                if (languages.Contains("typescript") && fileType == ".ts") { con = true; }
 
                 if ((con == true) || (languages.Contains(fileType.Substring(1))))
                 {
@@ -161,11 +167,11 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
             }
         }
 
-        if (deleteTempFile) { File.Delete(fileToRelate); }//if we created a temp file for the note option we need to delete it!
+        if (deleteTempFile) { File.Delete(fileToRelate); }//If we created a temp file for the note option we need to delete it!
 
         if (content.Length > 0)
         {
-            Document document = new Document();
+            Document document = new Document(); //Create the bundle file
             string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "David.ttf");
             PdfWriter writer = PdfWriter.GetInstance(document, new FileStream($"{name}.pdf", FileMode.Create));
             document.Open();
@@ -222,7 +228,7 @@ bundleCommand.SetHandler((languagesFromUser, name, note, sort, author, cleanLine
     }
     finally
     {
-
+       
     }
 
 }, bundleLangOption, bundleOutputOption, bundleNoteOption, bundleSortOption, bundleAuthorOption, bundleCleanLinesOption);

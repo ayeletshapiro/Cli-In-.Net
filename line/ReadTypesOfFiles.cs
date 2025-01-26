@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using Aspose.Html;
 using IronWord;
 using IronWord.Models;
@@ -58,7 +58,14 @@ namespace line
         }
         public static StringBuilder ReadRegularFile(string file, bool clearLines)
         {
+          
+           
             StringBuilder sb = new StringBuilder();
+            if ((System.IO.Path.GetExtension(file).Contains("xlsx")) || (System.IO.Path.GetExtension(file).Contains("pdf")))
+            {
+                sb.Append($"cannot read {System.IO.Path.GetExtension(file)} type of file");
+                return sb;
+            }
             sb.Append(File.ReadAllText(file, Encoding.UTF8));
 
             if (clearLines)
