@@ -23,10 +23,12 @@ the CLI Code Bundler is an essential tool forpackaging files for evaluation or d
 2. **Build the Project**:  
    Use the .NET terminal to build the application:  
    dotnet build
+   cmd
    ```  dotnet build
-3. **Add the Tool to Your Environment variables**:  
+4. **Add the Tool to Your Environment variables**:  
    Publish the project and add the executable to your Environment variables PATH for easy access from any folder:  
    in the origion folder of the project (the folder that the line project folder is there) open terminal and run:
+   cmd
    dotnet publish -o publish
    you get a folder called publish.
    copy the path of the publish folder.
