@@ -27,9 +27,8 @@ the CLI Code Bundler is an essential tool forpackaging files for evaluation or d
 4. **Add the Tool to Your Environment variables**:  
    Publish the project and add the executable to your Environment variables PATH for easy access from any folder:  
    in the origion folder of the project (the folder that the line project folder is there) open terminal and run:
-
    dotnet publish -o publish
-   you get a folder called publish.
+   -you get a folder called publish.
    copy the path of the publish folder.
    search in the computer "משתני סביבה" click on that and you will see a variable named "Path"
    click on it and add the path of the publish folder into the path variable
@@ -42,15 +41,15 @@ line bundle --language <languages> --output <bundle file's name> [options]
 
 ### Examples  
 - Bundle all files in the directory:
-  ```cli
+  
  line bundle --language all --output mergedCode
-  ```cli
+  
 - Bundle all files in a different directory:
  line bundle --language all --output "C:\Users\HOME\Desktop\‏‏\תיקיה חדשהmergedCode"
 
   ```  
 - Bundle specific languages (e.g., C# and Python) with cleanup and author details:  
-  ```cli
+  
   line bundle --language cs,py --output output --remove-empty-lines --author "John Doe"
   ```  
 
